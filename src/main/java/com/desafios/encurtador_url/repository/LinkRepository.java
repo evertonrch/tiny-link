@@ -1,4 +1,4 @@
-package com.desafios.url_encurtada.repository;
+package com.desafios.encurtador_url.repository;
 
 import model.Link;
 import org.springframework.data.mongodb.repository.MongoRepository;

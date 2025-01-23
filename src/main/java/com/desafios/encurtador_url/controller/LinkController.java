@@ -1,7 +1,7 @@
-package com.desafios.url_encurtada.controller;
+package com.desafios.encurtador_url.controller;
 
-import com.desafios.url_encurtada.dto.LinkResponse;
-import com.desafios.url_encurtada.service.LinkService;
+import com.desafios.encurtador_url.dto.LinkResponse;
+import com.desafios.encurtador_url.service.LinkService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

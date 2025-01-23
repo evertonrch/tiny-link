@@ -1,4 +1,4 @@
-package com.desafios.url_encurtada.utils;
+package com.desafios.encurtador_url.utils;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

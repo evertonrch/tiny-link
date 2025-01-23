@@ -1,6 +1,6 @@
 package model;
 
-import com.desafios.url_encurtada.dto.LinkResponse;
+import com.desafios.encurtador_url.dto.LinkResponse;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

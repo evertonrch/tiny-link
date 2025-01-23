@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.desafios</groupId>
-	<artifactId>url-encurtada</artifactId>
+	<artifactId>encurtador-url</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>url-encurtada</name>
+	<name>encurtador-url</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

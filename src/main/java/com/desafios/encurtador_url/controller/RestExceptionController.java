@@ -1,6 +1,6 @@
-package com.desafios.url_encurtada.controller;
+package com.desafios.encurtador_url.controller;
 
-import com.desafios.url_encurtada.exception.NegocioException;
+import com.desafios.encurtador_url.exception.NegocioException;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

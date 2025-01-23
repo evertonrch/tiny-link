@@ -1,9 +1,9 @@
-package com.desafios.url_encurtada.service;
+package com.desafios.encurtador_url.service;
 
-import com.desafios.url_encurtada.dto.LinkResponse;
-import com.desafios.url_encurtada.exception.LinkNaoEncontradoException;
-import com.desafios.url_encurtada.repository.LinkRepository;
-import com.desafios.url_encurtada.utils.LinkUtils;
+import com.desafios.encurtador_url.dto.LinkResponse;
+import com.desafios.encurtador_url.exception.LinkNaoEncontradoException;
+import com.desafios.encurtador_url.repository.LinkRepository;
+import com.desafios.encurtador_url.utils.LinkUtils;
 import model.Link;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

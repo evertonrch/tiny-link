@@ -1,4 +1,4 @@
-package com.desafios.url_encurtada.utils;
+package com.desafios.encurtador_url.utils;
 
 import org.apache.commons.lang3.RandomStringUtils;
 

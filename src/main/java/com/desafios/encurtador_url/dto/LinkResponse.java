@@ -1,4 +1,4 @@
-package com.desafios.url_encurtada.dto;
+package com.desafios.encurtador_url.dto;
 
 import java.time.LocalDateTime;
 

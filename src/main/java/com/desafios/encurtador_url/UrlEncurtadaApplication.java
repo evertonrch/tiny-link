@@ -1,4 +1,4 @@
-package com.desafios.url_encurtada;
+package com.desafios.encurtador_url;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;

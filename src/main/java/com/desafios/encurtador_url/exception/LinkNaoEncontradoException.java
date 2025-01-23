@@ -1,4 +1,4 @@
-package com.desafios.url_encurtada.exception;
+package com.desafios.encurtador_url.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
