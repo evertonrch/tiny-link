@@ -2,13 +2,11 @@ package com.desafios.url_encurtada.controller;
 
 import com.desafios.url_encurtada.dto.LinkResponse;
 import com.desafios.url_encurtada.service.LinkService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+import java.net.URI;
 import java.util.Map;
 
 @RestController
@@ -21,7 +19,7 @@ public class LinkController {
     }
 
     @PostMapping
-    public ResponseEntity<?> criaLink(@RequestBody Map<String, String> body, HttpServletRequest request) {
+    public ResponseEntity<LinkResponse> criaLink(@RequestBody Map<String, String> body) {
         String urlOriginal = body.get("url");
         LinkResponse response = linkService.criaLink(urlOriginal);
 
@@ -29,14 +27,11 @@ public class LinkController {
     }
 
     @GetMapping("/{parteAleatoria}")
-    public ResponseEntity<Void> redirecionaParaUrlOriginal(@PathVariable String parteAleatoria, HttpServletResponse response) {
+    public ResponseEntity<Void> redirecionaParaUrlOriginal(@PathVariable String parteAleatoria) {
         LinkResponse linkResponse = linkService.getLinkPorUrlEncurtada(parteAleatoria);
 
-        try {
-            response.sendRedirect(linkResponse.urlOriginal());
-            return ResponseEntity.ok().build();
-        } catch (IOException ex) {
-            return ResponseEntity.status(500).build();
-        }
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(linkResponse.urlOriginal()))
+                .build();
     }
 }
