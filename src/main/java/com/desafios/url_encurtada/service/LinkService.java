@@ -2,7 +2,6 @@ package com.desafios.url_encurtada.service;
 
 import com.desafios.url_encurtada.dto.LinkResponse;
 import com.desafios.url_encurtada.exception.LinkNaoEncontradoException;
-import com.desafios.url_encurtada.exception.NegocioException;
 import com.desafios.url_encurtada.repository.LinkRepository;
 import com.desafios.url_encurtada.utils.LinkUtils;
 import model.Link;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class LinkService {
