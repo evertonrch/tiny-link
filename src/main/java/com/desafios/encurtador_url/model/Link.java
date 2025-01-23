@@ -1,4 +1,4 @@
-package model;
+package com.desafios.encurtador_url.model;
 
 import com.desafios.encurtador_url.dto.LinkResponse;
 import org.springframework.data.annotation.Id;
