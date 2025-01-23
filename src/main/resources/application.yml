@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: url-encurtada
+
+  data:
+    mongodb:
+      host: 172.26.234.185
+      port: 27017
+      database: encurtador_url
+      username: root
+      password: 123
+#      uri: mongodb://root:123@172.26.234.185:27017/encurtador_url
