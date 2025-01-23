@@ -1,5 +1,6 @@
 package com.desafios.url_encurtada.service;
 
+import com.desafios.url_encurtada.dto.LinkResponse;
 import com.desafios.url_encurtada.repository.LinkRepository;
 import com.desafios.url_encurtada.utils.LinkUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ public class LinkService {
         this.linkRepository = linkRepository;
     }
 
-    public Link criaLink(String urlOriginal, HttpServletRequest request) {
+    public LinkResponse criaLink(String urlOriginal, HttpServletRequest request) {
         Link link = Link.comUrlOriginal(urlOriginal);
         link.setCriadaEm(LocalDateTime.now());
         link.setUrlEncurtada(geraUrlEncurtada(request));
@@ -29,7 +30,7 @@ public class LinkService {
         Link newLink = linkRepository.save(link);
         log.info("url encurtada {} com id {} criada.", link.getUrlEncurtada(), newLink.getId());
 
-        return newLink;
+        return newLink.toLinkResponse();
     }
 
     private String geraUrlEncurtada(HttpServletRequest request) {
