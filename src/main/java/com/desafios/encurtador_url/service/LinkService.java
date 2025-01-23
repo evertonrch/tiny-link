@@ -4,7 +4,7 @@ import com.desafios.encurtador_url.dto.LinkResponse;
 import com.desafios.encurtador_url.exception.LinkNaoEncontradoException;
 import com.desafios.encurtador_url.repository.LinkRepository;
 import com.desafios.encurtador_url.utils.LinkUtils;
-import model.Link;
+import com.desafios.encurtador_url.model.Link;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
