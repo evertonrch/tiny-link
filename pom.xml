@@ -18,6 +18,7 @@
 		<java.version>17</java.version>
 		<commons-lang3.version>3.17.0</commons-lang3.version>
 		<jacoco.version>0.8.12</jacoco.version>
+		<zxing.version>3.5.3</zxing.version>
 	</properties>
 
 	<dependencies>
@@ -46,6 +47,17 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>${zxing.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>${zxing.version}</version>
 		</dependency>
 
 	</dependencies>
