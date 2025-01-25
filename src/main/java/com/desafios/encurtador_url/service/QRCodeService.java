@@ -1,5 +1,6 @@
 package com.desafios.encurtador_url.service;
 
+import com.desafios.encurtador_url.exception.GeracaoQRCodeException;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
@@ -20,19 +21,23 @@ public class QRCodeService {
 
     public byte[] gerarQrcode(String url, int largura, int altura) {
         try {
-            QRCodeWriter writer = new QRCodeWriter();
-            BitMatrix bitMatrix = writer.encode(url, BarcodeFormat.QR_CODE, largura, altura);
-
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-
-            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream, alteraCor());
-
-            return outputStream.toByteArray();
+            BitMatrix bitMatrix = gerarBitMatrix(url, largura, altura);
+            return escreverQrCodeEmBytes(bitMatrix);
         } catch (WriterException | IOException ex) {
-            log.error("não foi possível gerar o QRCode. {}", ex.toString());
-            throw new RuntimeException(ex);
+            log.error("problema ao gerar QRCode com a url {}: {}",url, ex.toString());
+            throw new GeracaoQRCodeException("Falha ao gerar o QRCode.", ex);
         }
+    }
+
+    private byte[] escreverQrCodeEmBytes(BitMatrix bitMatrix) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream, alteraCor());
+        return outputStream.toByteArray();
+    }
+
+    private BitMatrix gerarBitMatrix(String url, int largura, int altura) throws WriterException {
+        QRCodeWriter writer = new QRCodeWriter();
+        return writer.encode(url, BarcodeFormat.QR_CODE, largura, altura);
     }
 
     private MatrixToImageConfig alteraCor() {
