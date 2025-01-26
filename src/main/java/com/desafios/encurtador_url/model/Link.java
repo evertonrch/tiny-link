@@ -14,6 +14,7 @@ public class Link {
     private String urlOriginal;
     private String urlEncurtada;
     private LocalDateTime criadaEm;
+    private String qrcode;
 
     private Link() {
     }
@@ -41,6 +42,10 @@ public class Link {
         return criadaEm;
     }
 
+    public String getQrcode() {
+        return qrcode;
+    }
+
     public void setUrlOriginal(String urlOriginal) {
         this.urlOriginal = urlOriginal;
     }
@@ -53,12 +58,16 @@ public class Link {
         this.criadaEm = criadaEm;
     }
 
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode;
+    }
+
     public LinkResponse toLinkResponse() {
         return new LinkResponse(
                 this.urlOriginal,
                 this.urlEncurtada,
                 this.criadaEm,
-                true
+                this.qrcode
         );
     }
 }

@@ -13,13 +13,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 
 @Service
 public class QRCodeService {
 
     private final Logger log = LoggerFactory.getLogger(QRCodeWriter.class);
 
-    public byte[] gerarQrcode(String url, int largura, int altura) {
+    public byte[] gerarQRCode(String url, int largura, int altura) {
         try {
             BitMatrix bitMatrix = gerarBitMatrix(url, largura, altura);
             return escreverQrCodeEmBytes(bitMatrix);
@@ -27,6 +28,11 @@ public class QRCodeService {
             log.error("problema ao gerar QRCode com a url {}: {}",url, ex.toString());
             throw new GeracaoQRCodeException("Falha ao gerar o QRCode.", ex);
         }
+    }
+
+    public String gerarQRCodeBase64(String url, int largura, int altura) {
+        byte[] qrcode = gerarQRCode(url, largura, altura);
+        return Base64.getEncoder().encodeToString(qrcode);
     }
 
     private byte[] escreverQrCodeEmBytes(BitMatrix bitMatrix) throws IOException {

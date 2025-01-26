@@ -18,9 +18,11 @@ public class LinkService {
     private final Logger log = LoggerFactory.getLogger(LinkService.class);
 
     private final LinkRepository linkRepository;
+    private final QRCodeService qrCodeService;
 
-    public LinkService(LinkRepository linkRepository) {
+    public LinkService(LinkRepository linkRepository, QRCodeService qrCodeService) {
         this.linkRepository = linkRepository;
+        this.qrCodeService = qrCodeService;
     }
 
     @Transactional
@@ -28,6 +30,7 @@ public class LinkService {
         Link link = Link.comUrlOriginal(urlOriginal);
         link.setCriadaEm(LocalDateTime.now());
         link.setUrlEncurtada(LinkUtils.geraAleatoriosAlfanumericos());
+        link.setQrcode(qrCodeService.gerarQRCodeBase64(urlOriginal, 200, 200));
 
         Link newLink = linkRepository.save(link);
         log.info("url encurtada {} com id {} criada.", link.getUrlEncurtada(), newLink.getId());

@@ -6,5 +6,5 @@ public record LinkResponse(
         String urlOriginal,
         String urlEncurtada,
         LocalDateTime criadaEm,
-        boolean estaAtiva
+        String qrcode
 ) {}

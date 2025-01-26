@@ -44,12 +44,12 @@ public class LinkController {
     public ResponseEntity<byte[]> getQRCode(@PathVariable String parteAleatoria) {
         LinkResponse linkResponse = linkService.getLinkPorUrlEncurtada(parteAleatoria);
 
-        byte[] qrCode = qrCodeService.gerarQrcode(linkResponse.urlOriginal(), 200,200);
+        byte[] qrCode = qrCodeService.gerarQRCode(linkResponse.urlOriginal(), 200,200);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
 
-        return ResponseEntity.status(200)
+        return ResponseEntity.status(HttpStatus.OK)
                 .headers(headers)
                 .body(qrCode);
     }
