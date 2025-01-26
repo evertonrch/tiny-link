@@ -13,7 +13,7 @@ public class ValidaURLRule {
 
     private final Logger log = LoggerFactory.getLogger(ValidaURLRule.class);
 
-    private final String URL_REGEX = "^(https?|ftp):\\/\\/[^\s/$.?#].[^\s]*$";
+    private final String URL_REGEX = "^(https?):\\/\\/[^\s/$.?#].[^\s]*$";
     private final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
 
     public void validar(String urlOriginal) {
