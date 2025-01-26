@@ -2,10 +2,10 @@ package com.desafios.encurtador_url.service;
 
 import com.desafios.encurtador_url.dto.LinkResponse;
 import com.desafios.encurtador_url.exception.LinkNaoEncontradoException;
+import com.desafios.encurtador_url.model.Link;
 import com.desafios.encurtador_url.repository.LinkRepository;
 import com.desafios.encurtador_url.rule.ValidaURLRule;
 import com.desafios.encurtador_url.utils.LinkUtils;
-import com.desafios.encurtador_url.model.Link;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,19 +39,20 @@ public class LinkService {
     }
 
     public LinkResponse getLinkPorUrlEncurtada(String urlEncurtada) {
-         return linkRepository.findByUrlEncurtada(urlEncurtada)
-                 .orElseThrow(() -> {
-                     log.error("erro ao buscar url encurtada: {}", urlEncurtada);
-                     return new LinkNaoEncontradoException("Não foi possível encontrar o link.");
-                 })
-                 .toLinkResponse();
+        return linkRepository.findByUrlEncurtada(urlEncurtada)
+                .orElseThrow(() -> {
+                    log.error("erro ao buscar url encurtada: {}", urlEncurtada);
+                    return new LinkNaoEncontradoException("Não foi possível encontrar o link.");
+                })
+                .toLinkResponse();
     }
 
     private Link getLink(String urlOriginal) {
-        Link link = Link.comUrlOriginal(urlOriginal);
-        link.setCriadaEm(LocalDateTime.now());
-        link.setUrlEncurtada(LinkUtils.geraAleatoriosAlfanumericos());
-        link.setQrcode(qrCodeService.gerarQRCodeBase64(urlOriginal, 200, 200));
-        return link;
+        return Link.builder()
+                .comUrlOriginal(urlOriginal)
+                .comCriadaEm(LocalDateTime.now())
+                .comQrcode(qrCodeService.gerarQRCodeBase64(urlOriginal, 200, 200))
+                .comUrlEncurtada(LinkUtils.geraAleatoriosAlfanumericos())
+                .build();
     }
 }

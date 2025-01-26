@@ -19,11 +19,40 @@ public class Link {
     private Link() {
     }
 
-    public static Link comUrlOriginal(String urlOriginal) {
-        Link link = new Link();
-        link.setUrlOriginal(urlOriginal);
-        link.setCriadaEm(LocalDateTime.now());
-        return link;
+    public static LinkBuilder builder() {
+        return new LinkBuilder();
+    }
+
+    public static class LinkBuilder {
+        private final Link link;
+
+        public LinkBuilder() {
+            link = new Link();
+        }
+
+        public LinkBuilder comUrlOriginal(String urlOriginal) {
+            link.urlOriginal = urlOriginal;
+            return this;
+        }
+
+        public LinkBuilder comUrlEncurtada(String urlEncurtada) {
+            link.urlEncurtada = urlEncurtada;
+            return this;
+        }
+
+        public LinkBuilder comQrcode(String qrcode) {
+            link.qrcode = qrcode;
+            return this;
+        }
+
+        public LinkBuilder comCriadaEm(LocalDateTime criadaEm) {
+            link.criadaEm = criadaEm;
+            return this;
+        }
+
+        public Link build() {
+            return link;
+        }
     }
 
     public String getId() {
