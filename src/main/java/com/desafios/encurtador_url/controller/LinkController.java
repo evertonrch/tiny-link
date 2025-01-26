@@ -31,18 +31,18 @@ public class LinkController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{parteAleatoria}")
-    public ResponseEntity<Void> redirecionaParaUrlOriginal(@PathVariable String parteAleatoria) {
-        LinkResponse linkResponse = linkService.getLinkPorUrlEncurtada(parteAleatoria);
+    @GetMapping("/{urlEncurtada}")
+    public ResponseEntity<Void> redirecionaParaUrlOriginal(@PathVariable String urlEncurtada) {
+        LinkResponse linkResponse = linkService.getLinkPorUrlEncurtada(urlEncurtada);
 
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(linkResponse.urlOriginal()))
                 .build();
     }
 
-    @GetMapping(path = "/{parteAleatoria}/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> getQRCode(@PathVariable String parteAleatoria) {
-        LinkResponse linkResponse = linkService.getLinkPorUrlEncurtada(parteAleatoria);
+    @GetMapping(path = "/{urlEncurtada}/qrcode", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getQRCode(@PathVariable String urlEncurtada) {
+        LinkResponse linkResponse = linkService.getLinkPorUrlEncurtada(urlEncurtada);
 
         byte[] qrCode = qrCodeService.gerarQRCode(linkResponse.urlOriginal(), 200,200);
 
