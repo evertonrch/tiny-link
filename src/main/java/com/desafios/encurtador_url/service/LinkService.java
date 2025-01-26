@@ -3,6 +3,7 @@ package com.desafios.encurtador_url.service;
 import com.desafios.encurtador_url.dto.LinkResponse;
 import com.desafios.encurtador_url.exception.LinkNaoEncontradoException;
 import com.desafios.encurtador_url.repository.LinkRepository;
+import com.desafios.encurtador_url.rule.ValidaURLRule;
 import com.desafios.encurtador_url.utils.LinkUtils;
 import com.desafios.encurtador_url.model.Link;
 import org.slf4j.Logger;
@@ -19,19 +20,18 @@ public class LinkService {
 
     private final LinkRepository linkRepository;
     private final QRCodeService qrCodeService;
+    private final ValidaURLRule validaURLRule;
 
-    public LinkService(LinkRepository linkRepository, QRCodeService qrCodeService) {
+    public LinkService(LinkRepository linkRepository, QRCodeService qrCodeService, ValidaURLRule validaURLRule) {
         this.linkRepository = linkRepository;
         this.qrCodeService = qrCodeService;
+        this.validaURLRule = validaURLRule;
     }
 
     @Transactional
     public LinkResponse criaLink(String urlOriginal) {
-        Link link = Link.comUrlOriginal(urlOriginal);
-        link.setCriadaEm(LocalDateTime.now());
-        link.setUrlEncurtada(LinkUtils.geraAleatoriosAlfanumericos());
-        link.setQrcode(qrCodeService.gerarQRCodeBase64(urlOriginal, 200, 200));
-
+        validaURLRule.validar(urlOriginal);
+        Link link = getLink(urlOriginal);
         Link newLink = linkRepository.save(link);
         log.info("url encurtada {} com id {} criada.", link.getUrlEncurtada(), newLink.getId());
 
@@ -45,5 +45,13 @@ public class LinkService {
                      return new LinkNaoEncontradoException("Não foi possível encontrar o link.");
                  })
                  .toLinkResponse();
+    }
+
+    private Link getLink(String urlOriginal) {
+        Link link = Link.comUrlOriginal(urlOriginal);
+        link.setCriadaEm(LocalDateTime.now());
+        link.setUrlEncurtada(LinkUtils.geraAleatoriosAlfanumericos());
+        link.setQrcode(qrCodeService.gerarQRCodeBase64(urlOriginal, 200, 200));
+        return link;
     }
 }
