@@ -1,6 +1,7 @@
 package com.desafios.encurtador_url.service;
 
 import com.desafios.encurtador_url.dto.LinkResponse;
+import com.desafios.encurtador_url.exception.LinkExpiradoException;
 import com.desafios.encurtador_url.exception.LinkNaoEncontradoException;
 import com.desafios.encurtador_url.model.Link;
 import com.desafios.encurtador_url.repository.LinkRepository;
@@ -11,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.function.Function;
 
 @Service
 public class LinkService {
@@ -38,13 +41,29 @@ public class LinkService {
         return newLink.toLinkResponse();
     }
 
+    @Transactional
     public LinkResponse getLinkPorUrlEncurtada(String urlEncurtada) {
         return linkRepository.findByUrlEncurtada(urlEncurtada)
+                .map(linkResponseFuncion())
                 .orElseThrow(() -> {
-                    log.error("erro ao buscar url encurtada: {}", urlEncurtada);
+                    log.error("url encurtada /{} não encontrada", urlEncurtada);
                     return new LinkNaoEncontradoException("Não foi possível encontrar o link.");
-                })
-                .toLinkResponse();
+                });
+    }
+
+    private Function<Link, LinkResponse> linkResponseFuncion() {
+        return link -> {
+            if (estaExpirado(link)) {
+                linkRepository.delete(link);
+                log.error("a url encurtada acessada foi expirada. '{}', original: {}", link.getUrlEncurtada(), link.getUrlOriginal());
+                throw new LinkExpiradoException("O Link que você tentou acessar expirou.");
+            }
+            return link.toLinkResponse();
+        };
+    }
+
+    private boolean estaExpirado(Link link) {
+        return Duration.between(link.getCriadaEm(), LocalDateTime.now()).toMinutes() >= 2;
     }
 
     private Link getLink(String urlOriginal) {
