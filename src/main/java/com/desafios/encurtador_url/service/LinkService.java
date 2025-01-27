@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.function.Function;
 
 @Service
 public class LinkService {
@@ -44,22 +43,20 @@ public class LinkService {
     @Transactional
     public LinkResponse getLinkPorUrlEncurtada(String urlEncurtada) {
         return linkRepository.findByUrlEncurtada(urlEncurtada)
-                .map(linkResponseFuncion())
+                .map(this::validaLink)
                 .orElseThrow(() -> {
                     log.error("url encurtada /{} não encontrada", urlEncurtada);
                     return new LinkNaoEncontradoException("Não foi possível encontrar o link.");
                 });
     }
 
-    private Function<Link, LinkResponse> linkResponseFuncion() {
-        return link -> {
-            if (estaExpirado(link)) {
-                linkRepository.delete(link);
-                log.error("a url encurtada acessada foi expirada. '{}', original: {}", link.getUrlEncurtada(), link.getUrlOriginal());
-                throw new LinkExpiradoException("O Link que você tentou acessar expirou.");
-            }
-            return link.toLinkResponse();
-        };
+    private LinkResponse validaLink(Link link) {
+        if (estaExpirado(link)) {
+            linkRepository.delete(link);
+            log.error("a url encurtada acessada foi expirada. '{}', original: {}", link.getUrlEncurtada(), link.getUrlOriginal());
+            throw new LinkExpiradoException("O Link que você tentou acessar expirou.");
+        }
+        return link.toLinkResponse();
     }
 
     private boolean estaExpirado(Link link) {
