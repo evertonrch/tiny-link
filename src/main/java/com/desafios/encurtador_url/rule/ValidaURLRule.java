@@ -17,7 +17,7 @@ public class ValidaURLRule {
     private final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
 
     public void validar(String urlOriginal) {
-        if (!ehURLValida(urlOriginal) && !URL_PATTERN.matcher(urlOriginal).matches()) {
+        if (!ehURLValida(urlOriginal)) {
             log.error("erro ao processar URL: {}", urlOriginal);
             throw new URLInvalidaException("A URL fornecida não é válida");
         }
