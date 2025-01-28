@@ -2,6 +2,7 @@ package com.desafios.encurtador_url.service;
 
 import com.desafios.encurtador_url.dto.LinkResponse;
 import com.desafios.encurtador_url.exception.GeracaoQRCodeException;
+import com.desafios.encurtador_url.exception.LinkExpiradoException;
 import com.desafios.encurtador_url.exception.URLInvalidaException;
 import com.desafios.encurtador_url.model.Link;
 import com.desafios.encurtador_url.repository.LinkRepository;
@@ -11,10 +12,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -112,5 +119,26 @@ class LinkServiceTest {
 
         verify(validaURLRule, times(1)).validar(urlOriginal);
         verify(linkRepository, never()).save(any(Link.class));
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoURLExpirar() {
+        String urlEncurtada = "abc123";
+        var tresMinutosAtras = LocalDateTime.now().minusMinutes(3);
+        String mensagemException = "O Link que você tentou acessar expirou.";
+        Link link = Link.builder()
+                .comUrlOriginal("http://site")
+                .comUrlEncurtada(urlEncurtada)
+                .comCriadaEm(tresMinutosAtras)
+                .build();
+
+        when(linkRepository.findByUrlEncurtada(urlEncurtada)).thenReturn(Optional.of(link));
+
+        var ex = assertThrows(LinkExpiradoException.class, () -> linkService.getLinkPorUrlEncurtada(urlEncurtada));
+
+        assertThat(mensagemException, is(ex.toProblemDetail().getDetail()));
+        assertThat(HttpStatus.GONE.value(), equalTo(ex.toProblemDetail().getStatus()));
+
+        verify(linkRepository, atLeastOnce()).findByUrlEncurtada(urlEncurtada);
     }
 }
