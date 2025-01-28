@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
@@ -21,8 +20,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -124,12 +122,14 @@ class LinkServiceTest {
     @Test
     void deveLancarExcecaoQuandoURLExpirar() {
         String urlEncurtada = "abc123";
-        var tresMinutosAtras = LocalDateTime.now().minusMinutes(3);
+
+        final int minutosExpirado = 3;
+        var tempoExpirado = LocalDateTime.now().withMinute(minutosExpirado);
         String mensagemException = "O Link que você tentou acessar expirou.";
         Link link = Link.builder()
                 .comUrlOriginal("http://site")
                 .comUrlEncurtada(urlEncurtada)
-                .comCriadaEm(tresMinutosAtras)
+                .comCriadaEm(tempoExpirado)
                 .build();
 
         when(linkRepository.findByUrlEncurtada(urlEncurtada)).thenReturn(Optional.of(link));
@@ -140,5 +140,35 @@ class LinkServiceTest {
         assertThat(HttpStatus.GONE.value(), equalTo(ex.toProblemDetail().getStatus()));
 
         verify(linkRepository, atLeastOnce()).findByUrlEncurtada(urlEncurtada);
+        verify(linkRepository, atLeastOnce()).delete(link);
+    }
+
+    @Test
+    void deveRedirecionarQuandoLinkNaoEstaExpirado() {
+        String urlEncurtada = "abc123";
+
+        final int horaNaoExpirada = 12;
+        final int minutoNaoExpirada = 2;
+        var tempoNaoExpirado = LocalDateTime.now()
+                .withHour(horaNaoExpirada)
+                .withMinute(minutoNaoExpirada);
+
+        Link link = Link.builder()
+                .comUrlOriginal("http://site")
+                .comUrlEncurtada(urlEncurtada)
+                .comCriadaEm(tempoNaoExpirado)
+                .build();
+
+        when(linkRepository.findByUrlEncurtada(urlEncurtada)).thenReturn(Optional.of(link));
+
+        assertDoesNotThrow(() -> {
+            LinkResponse response = linkService.getLinkPorUrlEncurtada(urlEncurtada);
+
+            assertThat(response, notNullValue());
+            assertTrue(response.criadaEm().getMinute() <= 2);
+        });
+
+        verify(linkRepository, atLeastOnce()).findByUrlEncurtada(urlEncurtada);
+        verify(linkRepository, never()).delete(any(Link.class));
     }
 }
