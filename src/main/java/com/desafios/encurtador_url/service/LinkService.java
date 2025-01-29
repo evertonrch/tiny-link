@@ -24,6 +24,10 @@ public class LinkService {
     private final QRCodeService qrCodeService;
     private final ValidaURLRule validaURLRule;
 
+    private static final short EXPIRACAO_LINK_EM_MINUTOS = 2;
+    private static final short LARGURA_QRCODE = 200;
+    private static final short ALTURA_QRCODE = 200;
+
     public LinkService(LinkRepository linkRepository, QRCodeService qrCodeService, ValidaURLRule validaURLRule) {
         this.linkRepository = linkRepository;
         this.qrCodeService = qrCodeService;
@@ -60,14 +64,14 @@ public class LinkService {
     }
 
     private boolean estaExpirado(Link link) {
-        return Duration.between(link.getCriadaEm(), LocalDateTime.now()).toMinutes() >= 2;
+        return Duration.between(link.getCriadaEm(), LocalDateTime.now()).toMinutes() >= EXPIRACAO_LINK_EM_MINUTOS;
     }
 
     private Link getLink(String urlOriginal) {
         return Link.builder()
                 .comUrlOriginal(urlOriginal)
                 .comCriadaEm(LocalDateTime.now())
-                .comQrcode(qrCodeService.gerarQRCodeBase64(urlOriginal, 200, 200))
+                .comQrcode(qrCodeService.gerarQRCodeBase64(urlOriginal, LARGURA_QRCODE, ALTURA_QRCODE))
                 .comUrlEncurtada(LinkUtils.geraAleatoriosAlfanumericos())
                 .build();
     }
