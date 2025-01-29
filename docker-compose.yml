@@ -5,12 +5,14 @@ services:
     image: mongo
     container_name: mongod
     restart: always
-    # necessário expor a porta, pois está rodando no WSL
     ports:
       - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 123
+    networks:
+      - api_network
+      - frontend
 
   # GUI
   mongo-express:
@@ -24,3 +26,28 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: 123
       ME_CONFIG_MONGODB_URL: mongodb://root:123@mongo:27017/
       ME_CONFIG_BASICAUTH: false
+    networks:
+      - frontend
+
+  tiny-link:
+    build: .
+    image: tiny-link
+    container_name: api
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongo
+    networks:
+      - api_network
+
+networks:
+  api_network:
+    ipam:
+      config:
+        - subnet: 192.168.1.8/29
+          ip_range: 192.168.1.8/29
+          gateway: 192.168.1.9
+
+  frontend:
+    driver: bridge
