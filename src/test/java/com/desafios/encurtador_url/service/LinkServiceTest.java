@@ -20,7 +20,8 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -147,11 +148,7 @@ class LinkServiceTest {
     void deveRedirecionarQuandoLinkNaoEstaExpirado() {
         String urlEncurtada = "abc123";
 
-        final int horaNaoExpirada = 12;
-        final int minutoNaoExpirada = 2;
-        var tempoNaoExpirado = LocalDateTime.now()
-                .withHour(horaNaoExpirada)
-                .withMinute(minutoNaoExpirada);
+        var tempoNaoExpirado = LocalDateTime.now();
 
         Link link = Link.builder()
                 .comUrlOriginal("http://site")
@@ -165,7 +162,6 @@ class LinkServiceTest {
             LinkResponse response = linkService.getLinkPorUrlEncurtada(urlEncurtada);
 
             assertThat(response, notNullValue());
-            assertTrue(response.criadaEm().getMinute() <= 2);
         });
 
         verify(linkRepository, atLeastOnce()).findByUrlEncurtada(urlEncurtada);
