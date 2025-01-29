@@ -23,7 +23,7 @@ A aplicação segue **padrões arquiteturais e de projeto** para garantir escala
 - **Padrão em Camadas**: Separação entre Controller, Service e Repository.
 - **Builder**: Construção fluida de objetos complexos.
 - **Static Factory Method**: Criação de instâncias de forma encapsulada.
-- **Rule Pattern**: Encapsulamento de regras de negócio.
+- **Rule Pattern**: Encapsulamento de validações.
 
 ---
 
