@@ -63,11 +63,7 @@ public class QRCodeService {
     }
 
     private MatrixToImageConfig alteraCor() {
-        // azul
-        int onColor = 0xFF1E90FF;
-        // branco
-        int offColor = 0xFFFFFFFF;
-
-        return new MatrixToImageConfig(onColor, offColor);
+        int azul = 0xFF1E90FF, branco = 0xFFFFFFFF;
+        return new MatrixToImageConfig(azul, branco);
     }
 }
