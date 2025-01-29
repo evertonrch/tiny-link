@@ -41,20 +41,24 @@ A aplicação segue **padrões arquiteturais e de projeto** para garantir escala
    cd url-shortener-api
    ```
    
-2. **Configure o banco de dados** no `application.yml` (os dados da URL de conexão devem corresponder aos do `docker-compose.yml`):
+2. **Configure o banco de dados** no `application.yml` (os dados da URL de conexão devem corresponder aos do serviço do mongo no `docker-compose.yml`):
    ```
    spring:
      data:
        mongodb:
-         uri: mongodb://seu-usuario:sua-senha@seu-host:27017/encurtador_url
+         uri: mongodb://usuario:senha@host:porta/banco_de_dados
    ```
-   
-3. **Suba os containers com Docker Compose**:
+
+3. Gere o `.jar` da aplicação para posteriormente o docker criar a imagem da api (caso queira rodar os testes retire a flag `-DskipTests`):
+   ```
+   mvn clean package -DskipTests
+   ```
+4. **Suba os containers com Docker Compose**:
    ```
    docker-compose up -d
    ```
    
-4. **A API estará disponível em**:
+5. **A API estará disponível em**:
    ```
    http://localhost:8080
    ```
@@ -86,7 +90,7 @@ A aplicação segue **padrões arquiteturais e de projeto** para garantir escala
 ---
 
 ### 🔹 Redirecionar para a URL original
-**GET /{urlEncurtada}**
+**GET /api/links/{urlEncurtada}**
 
 ```
 curl -X GET http://localhost:8080/uxddf
@@ -96,7 +100,7 @@ curl -X GET http://localhost:8080/uxddf
 ---
 
 ### 🔹 Gerar QR Code
-**GET /{urlEncurtada}/qrcode**
+**GET /api/links/{urlEncurtada}/qrcode**
 
 ```
 curl -X GET http://localhost:8080/uxddf/qrcode --output qrcode.png
