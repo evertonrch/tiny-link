@@ -103,7 +103,7 @@ curl -X GET http://localhost:8080/api/links/uxddf
 **GET /api/links/{urlEncurtada}/qrcode**
 
 ```
-curl -X GET http://localhost:8080/uxddf/qrcode --output qrcode.png
+curl -X GET http://localhost:8080/api/links/uxddf/qrcode --output qrcode.png
 ```
 ➡️ **Retorna uma imagem PNG do QR Code**
 
