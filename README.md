@@ -37,7 +37,7 @@ A aplicação segue **padrões arquiteturais e de projeto** para garantir escala
 
 1. **Clone o repositório**:
    ```
-   git clone https://github.com/seu-usuario/tiny-link.git
+   git clone https://github.com/evertonrch/tiny-link.git
    cd tiny-link
    ```
    
