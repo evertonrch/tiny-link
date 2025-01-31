@@ -93,7 +93,7 @@ A aplicação segue **padrões arquiteturais e de projeto** para garantir escala
 **GET /api/links/{urlEncurtada}**
 
 ```
-curl -X GET http://localhost:8080/uxddf
+curl -X GET http://localhost:8080/api/links/uxddf
 ```
 ➡️ **Redireciona para:** `https://www.exemplo.com`
 
