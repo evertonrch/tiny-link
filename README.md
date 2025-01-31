@@ -37,8 +37,8 @@ A aplicação segue **padrões arquiteturais e de projeto** para garantir escala
 
 1. **Clone o repositório**:
    ```
-   git clone https://github.com/seu-usuario/url-shortener-api.git
-   cd url-shortener-api
+   git clone https://github.com/seu-usuario/tiny-link.git
+   cd tiny-link
    ```
    
 2. **Configure o banco de dados** no `application.yml` (os dados da URL de conexão devem corresponder aos do serviço do mongo no `docker-compose.yml`):
