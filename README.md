@@ -73,14 +73,14 @@ A aplicação segue **padrões arquiteturais e de projeto** para garantir escala
 #### 📥 Request:
 ```
 {
-  "url": "https://www.exemplo.com"
+  "url": "https://www.exemplo.com/path?param1=abc&param2=def"
 }
 ```
 
 #### 📤 Response:
 ```
 {
-    "urlOriginal": "https://www.exemplo.com",
+    "urlOriginal": "https://www.exemplo.com/path?param1=abc&param2=def",
     "urlEncurtada": "uxddf",
     "criadaEm": "2025-01-29T03:29:33.704476228",
     "qrcode": "qrcode em base64..."
@@ -95,7 +95,7 @@ A aplicação segue **padrões arquiteturais e de projeto** para garantir escala
 ```
 curl -X GET http://localhost:8080/api/links/uxddf
 ```
-➡️ **Redireciona para:** `https://www.exemplo.com`
+➡️ **Redireciona para:** `https://www.exemplo.com/path?param1=abc&param2=def`
 
 ---
 
